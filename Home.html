@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Management System</title>
+  <link rel="stylesheet" href="home.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="app">
+    <div class="nav">
+      <div class="menu">
+        <span style="cursor: pointer" class="material-symbols-outlined" onmouseover="handlemenu()">menu</span>
+        <p style="margin-left: 20px">Log Management System</p>
+      </div>
+      <div id="sides" class="sidebars">
+        <p onclick="handleHome()">Home</p>
+        <p onclick="handleApp()">Application Logs</p>
+        <p onclick="getTomcat()">Server Logs</p>
+        <p onclick="handleGraph()">Graphical Representation</p>
+        <div class="notifications" style="padding-bottom: 10px;position: relative;" onclick="handlenotification()">
+
+          <span  class="material-symbols-outlined">
+            notifications
+            </span>
+            <span id="badge" style="background-color: red;border-radius: 50%;width: 16px;height: 16px;color: #fff;position: absolute;top: -10px;right: -6px;text-align: center;font-size: 12px;">0</span>
+        </div>
+      </div>
+      <div class="profile" id="profile" onclick="handleLogout()">
+        <img style="
+              height: 30px;
+              width: 30px;
+              border-radius: 50%;
+              object-fit: cover;
+              cursor: pointer;
+            " src="userpic.jpg" alt="" />
+        <p style="margin-right: 10px; margin-bottom: 0px" id="uname"></p>
+      </div>
+    </div>
+    <div id="side" class="dnone sidebar">
+      <p onclick="handleHome()">Home</p>
+      <p onclick="handleApp()">Application Logs</p>
+      <p onclick="getTomcat()">Server Logs</p>
+      <p onclick="handleGraph()">Graphical Representation</p>
+    </div>
+    <div class="logout" id="logout">
+      <p onclick="handleLogout()">Logout</p>
+    </div>
+    <div id="img" class="img" style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 700px;
+          width: 100%;
+        ">
+      <img style="height: 500px; width: 1000px" src="start.jpg" alt="" />
+    </div>
+
+    <div class="logs" id="logs">
+      <div id="tol" class="total">
+        <p style="font-size: 18px; font-weight: 700">Total logs</p>
+        <p id="toti" style="font-size: 15px; color: rgb(78, 131, 31)"></p>
+      </div>
+      <div id="stol" class="total">
+        <p style="font-size: 18px; font-weight: 700">Total logs</p>
+        <p id="stoti" style="font-size: 15px; color: rgb(78, 131, 31)"></p>
+      </div>
+
+      <div class="search">
+        <div style="display: flex; align-items: center; justify-content: center">
+          <input type="text" id="searchInput" placeholder="Search" />
+          <span style="cursor: pointer" class="material-symbols-outlined">search</span>
+        </div>
+        <input type="date" style="cursor: pointer" id="searchDInput" placeholder="Search"
+          onchange="handleSearch(event)" />
+        <button class="exp" onclick="pdf()" style="
+              outline: none;
+              cursor: pointer;
+              width: 140px;
+              height: 40px;
+              border-radius: 10px;
+              border: none;
+              background-color: rgb(172, 178, 178);
+              color: white;
+              margin-left: 100px;
+            ">
+          Export To PDF
+        </button>
+        <button class="exp" onclick="mail()" style="
+              outline: none;
+              cursor: pointer;
+              width: 140px;
+              height: 40px;
+              border-radius: 10px;
+              border: none;
+              background-color: rgb(172, 178, 178);
+              color: white;
+              margin-left: 30px;
+            ">
+          Share
+        </button>
+      </div>
+    
+      <div class="refresh" onclick="handleUApp()">
+        <span class="material-symbols-outlined">
+          refresh
+        </span>
+       
+      </div>
+      <div class="alerrt" onclick="displayAlert()">
+        <span class="material-symbols-outlined" style="z-index: 102;">
+          add_alert
+          </span>
+      </div>
+      <div id="DialogAlert" class="DialogAlert">
+        <div class="closse" onclick="handlalertClose()">
+          <span class="material-symbols-outlined" style="color: #fff;"> close </span>
+        </div>
+        <input id="evId" type="text" placeholder="Enter EventId">
+        <input id="evCa" type="text" placeholder="Enter Task Category">
+        <button onclick="addAlert()">Set Alert</button>
+      </div>
+      <div class="log-content" id="logContent" style="height: 400px; overflow-y: auto; overflow-x: hidden"></div>
+      <div class="log-content" id="slogContent" style="height: 400px; overflow-y: auto; overflow-x: hidden"></div>
+      
+    </div>
+    <div class="graph" id="graph">
+      <div class="info">
+        <p style="font-size: 20px;font-weight: 700;">Today's Data</p>
+        <div class="pinfo">
+          <div class="icolor"></div>
+          <p>Info</p>
+        </div>
+        <div class="pwar">
+          <div class="wcolor"></div>
+          <p>Warning</p>
+        </div>
+        <div class="pothers">
+          <div class="ocolor"></div>
+          <p>Others</p>
+        </div>
+      </div>
+      <div class="bbar">
+        <div id="con" class="container"></div>
+      </div>
+      <div class="pie" id="pieChart"></div>
+    </div>
+    <div class="alertmodall" id="alertmodall">
+      <div class="closse" onclick="handleAMClose()">
+        <span class="material-symbols-outlined"> close </span>
+      </div>
+      <div class="acontainer" id="acontainer"></div>
+    </div>
+    <div class="modall" id="modall">
+      <div class="closse" onclick="handleClose()">
+        <span class="material-symbols-outlined"> close </span>
+      </div>
+      <div class="content" id="cmessage"></div>
+    </div>
+    <div class="mmodall" id="mailmodall" style="  position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    width: 400px;
+    height: 180px;
+    /* background-color: rgb(229, 247, 98); */
+    background-color: rgb(135, 158, 249);
+    color:#080505;
+z-index: 109;
+border-radius: 13px;
+font-size: 14px;
+padding-top: 10px;padding-left: 10px;padding-right: 10px;">
+      <div class="closse" onclick="handlemailClose()">
+        <span class="material-symbols-outlined" style="color: #fff;"> close </span>
+      </div>
+      <div class="content" id="tomail" style="padding: 20px;">
+        <div style="display: flex;align-items: center;gap: 50px;">
+         
+          <input class="inp" id="ToEmail" placeholder="Enter To Address" style="color: #fff;;margin-bottom: 15px;width: 100%;outline: none;border: none;border-bottom: 1px solid white;background: transparent;" type="text"/>
+        </div>
+        <div style="display: flex;align-items: center;gap: 18px;">
+       
+          <input id="Subject" class="inp" placeholder="Enter Subject" style="color: #fff;;margin-bottom: 20px;width: 100%;outline: none;border: none;border-bottom: 1px solid white;background: transparent;" type="text"/>
+        </div>
+        <button style="cursor: pointer;height: 28px;width: 60px;border: none;border-radius: 10px;background-color: rgb(96, 232, 96);color: white;" onclick="sendEmail()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+setInterval(function(){ val= parseInt(document.getElementById("toti").textContent);
+      var alerts=JSON.parse(window.localStorage.getItem("Alerts"));
+      console.log(alerts);
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+        
+          var result = JSON.parse(this.responseText);
+          window.localStorage.setItem("data", JSON.stringify(result));
+          var logContent = document.getElementById("logContent");
+          
+          document.getElementById("toti").textContent = result.length;
+          var c=0;
+          for (let i = val+1; i < result.length; i++) {
+            alerts.map((e)=>{if(parseInt(e.id.trim())==result[i].id && e.category.toUpperCase()==result[i].message.toUpperCase()){
+              c++;
+              var xhtt=new XMLHttpRequest();
+              xhtt.onreadystatechange=function(){
+                if(this.readyState==4 && this.status==200){
+                  console.log(xhtt.responseText);
+                }
+              }
+              xhtt.open("POST", "http://localhost:5678/LogManagement/addnot", true);
+      xhtt.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      var data="eid="+e.id+"&evalue="+e.category+"&etime="+result[i].time;
+      xhtt.send(data);
+            }})
+            var logItem = document.createElement("div");
+            logItem.classList.add("log-item");
+            logItem.innerHTML = `
+                            <div style="width:15%;font-size:14px" class="log-number">${i + 1
+              }</div>
+              <div style="width:25%;font-weight:700" class="log-source">${result[i].id
+              }</div>
+                            <div style="width:35%;font-weight:700" class="log-source">${result[i].time
+              }</div>
+            
+                            <div style="width:35%;font-size:14px;font-style:italic" class="log-message">${result[i].message
+              }</div>
+                          
+                        `;
+            logItem.addEventListener("click", function (e) {
+              document.getElementById("modall").style.display = "flex";
+              var logMessageElement =
+                e.currentTarget.querySelector(".log-message");
+              if (logMessageElement) {
+                var messageContent = logMessageElement.textContent.trim();
+                handleAppDialog(messageContent);
+              }
+            });
+            logContent.appendChild(logItem);
+          }
+          if(document.getElementById("badge").textContent==0 && c==0){document.getElementById("badge").style.display="none"}
+          else{document.getElementById("badge").style.display="flex";document.getElementById("badge").innerText=c;}
+        }
+        document.getElementById("slogContent").style.display = "none";
+      };
+
+      xhr.open("POST", "http://localhost:5678/LogManagement/jni", true);
+      xhr.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhr.send();
+     },10000);
+
+
+    function handleAMClose(){
+      document.getElementById("alertmodall").style.display="none";
+    }
+function handlenotification(){
+document.getElementById("alertmodall").style.display="flex";
+var xhttp=new XMLHttpRequest();
+xhttp.onreadystatechange=function(){
+  if(xhttp.readyState==4 && xhttp.status==200){
+
+    var data=JSON.parse(this.responseText);
+    var con=document.getElementById("acontainer");
+    document.getElementById("acontainer").innerHTML="";
+    data.forEach(function(i){
+      
+      var el=document.createElement("div");
+      el.classList.add("divalert")
+      el.innerHTML=`
+      <p>On ${i.etime} , an event with id = ${i.eid} , category = ${i.evalue} has occurred.</p>
+      `;
+      con.appendChild(el);
+    })
+  }
+}
+xhttp.open("GET", "http://localhost:5678/LogManagement/notget", true);
+      xhttp.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhttp.send();
+}
+
+
+
+  function addAlert() {
+    var id = document.getElementById("evId").value;
+    var ca = document.getElementById("evCa").value;
+    var alerts = JSON.parse(window.localStorage.getItem("Alerts")) || [];
+    alerts.push({id: id, category: ca});
+    window.localStorage.setItem("Alerts", JSON.stringify(alerts));
+    showApiResultModal("Alert added successfully",true)
+    handlalertClose();  
+}
+
+
+    function displayAlert(){
+      document.getElementById("DialogAlert").style.display="flex";
+    }
+      function showApiResultModal(message, isSuccess) {
+    	  if (isSuccess) {
+    	    Swal.fire({
+    	      title: 'Success',
+    	      text: message,
+    	      icon: 'success',
+    	    });
+    	  } else {
+    	    Swal.fire({
+    	      title: 'Failure',
+    	      text: message,
+    	      icon: 'error',
+    	    });
+    	  }
+    	}
+    function sendEmail(){
+      var emailTo=document.getElementById("ToEmail").value;
+      var subject=document.getElementById("Subject").value;
+      var email=document.getElementById("logContent").textContent;
+      email=(email.toString().split("\n"));
+      email = email.map((e) => e.trim());
+      email = email.reduce((acc, e) => {
+    if (e.length >= 1) {
+        acc.push(e);
+    }
+    return acc;
+}, []);
+// console.log(email);
+var s=JSON.stringify(email);
+console.log(s);
+fetch('http://localhost:5678/LogManagement/sendEmail', {
+        	    method: 'POST',
+        	    headers: {
+        	      'Content-Type': 'application/x-www-form-urlencoded',
+        	    },
+        	    body: `to=${emailTo}&sub=${subject}&email=${s}`,
+        	  })
+        	    .then(response=>{
+                  if (response.status == 200) {
+        	        showApiResultModal("Email successfully sent", true);
+        	       
+        	      } 
+              } )
+        	 
+        	    
+        	    .catch(error => {
+        	      console.error('Error:', error);
+        	      showApiResultModal('An error occurred while updating leave status', false);
+        	    });
+    
+    }
+
+    function mail(){
+      document.getElementById("mailmodall").style.display = "flex";
+    }
+    function handleLogout() {
+      window.location = "http://localhost:5678/LogManagement/login.html";
+      window.localStorage.clear();
+    }
+    function pdf() {
+      window.jsPDF = window.jspdf.jsPDF;
+
+      var doc = new jsPDF();
+      var elementHTML;
+
+      if (document.getElementById("logContent").style.display === "none") {
+        elementHTML = document.querySelector("#slogContent");
+      } else {
+        elementHTML = document.querySelector("#logContent");
+      }
+
+   
+      var htmlContent = elementHTML.innerText;
+
+      var yPos = 10;
+
+      var pageHeight = doc.internal.pageSize.height;
+
+      var contentLines = doc.splitTextToSize(
+        htmlContent,
+        doc.internal.pageSize.width - 20
+      );
+
+      contentLines.forEach(function (line) {
+        doc.text(10, yPos, line);
+        if (yPos + 10 >= pageHeight) {
+          doc.addPage(); 
+          yPos = 10; 
+        } else {
+          yPos += 10; 
+        }
+      });
+      var date = new Date().getTime();
+      doc.save(`${date}.pdf`);
+    }
+
+    document
+      .getElementById("profile")
+      .addEventListener("mouseover", function (e) {
+        console.log("clicked");
+        document.getElementById("logout").style.display = "flex";
+      });
+
+    function handleClose() {
+      document.getElementById("modall").style.display = "none";
+    }
+    function handlemailClose() {
+      document.getElementById("mailmodall").style.display = "none";
+    }
+    function handlalertClose(){
+      document.getElementById("DialogAlert").style.display = "none";
+    }
+    window.addEventListener("click", function () {
+      handleLeave();
+    });
+    const socket = new WebSocket(
+      "ws://localhost:5678/LogManagement/getTomcatLogsWebSocket"
+    );
+
+    socket.onopen = function (event) {
+      console.log("WebSocket connection established.");
+    };
+
+    function handleSearch(event) {
+      socket.send(event.target.value);
+    }
+    socket.onmessage = function (event) {
+      var res = event.data;
+     
+      if(res.length<=20){
+        console.log("in bar")
+      console.log(res.trim().split("|"))
+      var today=(res.trim().split("|"))[0]
+      var yesterday=(res.trim().split("|"))[1]
+      var daybeforeyesterday=(res.trim().split("|"))[2]
+      var itotal=parseInt(today)+parseInt(yesterday)+parseInt(daybeforeyesterday);
+      var bper = (today/ itotal) * 100;
+      var bwar = (yesterday/ itotal) * 100;
+      var bothers = (daybeforeyesterday / itotal) * 100;
+      var barData = [];
+      barData.push(bper);
+      barData.push(bwar);
+      barData.push(bothers);
+      var container = document.getElementById("con");
+      container.style.position = "relative";
+      container.innerHTML = "";
+      for (var i = 0; i < barData.length; i++) {
+        console.log(i);
+        var bar = document.createElement("div");
+        bar.className = "bar";
+        var value = parseInt(barData[i]);
+        var innerBar = document.createElement("div");
+        innerBar.style.height = `${value}%`;
+        if (i == 1) {
+          innerBar.style.backgroundColor = "lightblue";
+        }
+        if (i == 2) {
+          innerBar.style.backgroundColor = "orange";
+        }
+        var ibar = document.createElement("span");
+        if (i == 0) {
+          var today = new Date();
+          var yesterday = new Date(today);
+          yesterday.setDate(today.getDate() - 1);
+          var yesterdayDateString = yesterday.toISOString().substring(0, 10);
+          ibar.textContent = yesterdayDateString;
+        } else if (i == 1) {
+          var today = new Date();
+          var yesterday = new Date(today);
+          yesterday.setDate(today.getDate() - 1);
+          var yesterdayDateString = yesterday.toISOString().substring(0, 10);
+          ibar.textContent = yesterdayDateString;
+        } else {
+          var today = new Date();
+          var yesterday = new Date(today);
+          yesterday.setDate(today.getDate() - 2);
+          var yesterdayDateString = yesterday.toISOString().substring(0, 10);
+          ibar.textContent = yesterdayDateString;
+        }
+        ibar.style.color = "black";
+        ibar.style.position = "absolute";
+        ibar.style.bottom = "-20px";
+        ibar.style.fontSize = "12px";
+
+        bar.appendChild(innerBar);
+        bar.appendChild(ibar);
+        container.appendChild(bar);
+      }
+      }
+      else{
+        console.log("in pie");
+      var rres = res.split(",");
+      var len = rres.length;
+      document.getElementById("stoti").textContent = len;
+      var data = rres[len - 1];
+      var data = data.substring(1, data.length - 2);
+      rres.pop();
+      function decodeUnicode(data) {
+        return data.replace(/\\u[\dA-F]{4}/gi, function (match) {
+          return String.fromCharCode(parseInt(match.replace(/\\u/g, ""), 16));
+        });
+      }
+      var piedata=decodeUnicode(data)
+      console.log(piedata)
+      var info=piedata.split("|")[0].split("=")[1]; 
+      var war=piedata.split("|")[1].split("=")[1];
+      var others=piedata.split("|")[2].split("=")[1];
+      var itotal=parseInt(info)+parseInt(war)+parseInt(others)
+      
+      var iper=(parseInt(info)/itotal)*360;
+      var iwar=(parseInt(war)/itotal)*360;
+      var iothers=(parseInt(others)/itotal)*360;
+      
+      document.getElementById(
+        "pieChart"
+      ).style.backgroundImage = `conic-gradient(pink ${iper}deg, lightblue ${iper}deg ${iper + iwar
+        }deg, orange ${iper + iwar}deg)`;
+      var logContent = document.getElementById("slogContent");
+      logContent.innerHTML = "";
+      rres.forEach(function (r, i) {
+        var logItem = document.createElement("div");
+        logItem.classList.add("log-item");
+        var result = r.split("|");
+        logItem.innerHTML = `
+                            <div style="width:10%;font-size:14px" class="log-number">${i + 1
+          }</div>
+                            <div style="width:10%;" class="log-source">${result[3] !== undefined ? result[3] : "unknown"
+          }</div>
+                            <div style="width:30%;font-weight:700" class="log-Date">${i == 0
+            ? result[0].substring(2, result[0].length) +
+            " " +
+            result[1]
+            : result[0].substring(1, result[0].length) +
+            " " +
+            result[1]
+          }</div>
+                            <div style="width:50%;font-size:14px;font-style:italic;overflow:hidden; white-space: nowrap;text-overflow: ellipsis;" class="log-message">${result[4] !== undefined ? result[4] : "unknown"
+          }</div>
+                        `;
+        logItem.addEventListener("click", function (e) {
+          document.getElementById("modall").style.display = "flex";
+          var logMessageElement =
+            e.currentTarget.querySelector(".log-message");
+          if (logMessageElement) {
+            var messageContent = logMessageElement.textContent.trim();
+            handleDialog(messageContent);
+          }
+        });
+
+        logContent.appendChild(logItem);
+      });
+    }
+    };
+  
+    function handleDialog(content) {
+      document.getElementById("cmessage").textContent = content;
+    }
+
+    function handleAppDialog(messageContent) {
+      document.getElementById("cmessage").textContent = messageContent;
+    }
+    function handleUApp(){
+      var val= parseInt(document.getElementById("toti").textContent);
+      var alerts=JSON.parse(window.localStorage.getItem("Alerts"));
+      console.log(alerts);
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // console.log(xhr.responseText);
+          var result = JSON.parse(this.responseText);
+          window.localStorage.setItem("data", JSON.stringify(result));
+          var logContent = document.getElementById("logContent");
+          
+          document.getElementById("toti").textContent = result.length;
+          var c=0;
+          for (let i = val+1; i < result.length; i++) {
+            alerts.map((e)=>{if(parseInt(e.id.trim())==result[i].id && e.category.toUpperCase()==result[i].message.toUpperCase()){
+              c++;
+              var xhtt=new XMLHttpRequest();
+              xhtt.onreadystatechange=function(){
+                if(this.readyState==4 && this.status==200){
+                  console.log(xhtt.responseText);
+                }
+              }
+              xhtt.open("POST", "http://localhost:5678/LogManagement/addnot", true);
+      xhtt.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      var data="eid="+e.id+"&evalue="+e.category+"&etime="+result[i].time;
+      xhtt.send(data);
+            }})
+            var logItem = document.createElement("div");
+            logItem.classList.add("log-item");
+            logItem.innerHTML = `
+                            <div style="width:15%;font-size:14px" class="log-number">${i + 1
+              }</div>
+              <div style="width:25%;font-weight:700" class="log-source">${result[i].id
+              }</div>
+                            <div style="width:35%;font-weight:700" class="log-source">${result[i].time
+              }</div>
+            
+                            <div style="width:35%;font-size:14px;font-style:italic" class="log-message">${result[i].message
+              }</div>
+                          
+                        `;
+            logItem.addEventListener("click", function (e) {
+              document.getElementById("modall").style.display = "flex";
+              var logMessageElement =
+                e.currentTarget.querySelector(".log-message");
+              if (logMessageElement) {
+                var messageContent = logMessageElement.textContent.trim();
+                handleAppDialog(messageContent);
+              }
+            });
+            logContent.appendChild(logItem);
+          }
+          if(document.getElementById("badge").textContent==0 && c==0){document.getElementById("badge").style.display="none"}
+          else{document.getElementById("badge").style.display="flex";document.getElementById("badge").innerText=c;}
+        }
+        document.getElementById("slogContent").style.display = "none";
+      };
+
+      xhr.open("POST", "http://localhost:5678/LogManagement/jni", true);
+      xhr.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhr.send();
+      
+    }
+function handleJApp(){
+  var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // console.log(xhr.responseText);
+          var result = JSON.parse(this.responseText);
+          window.localStorage.setItem("data", JSON.stringify(result));
+          var logContent = document.getElementById("logContent");
+          logContent.innerHTML = "";
+          document.getElementById("toti").textContent = result.length;
+          for (let i = 0; i < result.length; i++) {
+            var logItem = document.createElement("div");
+            logItem.classList.add("log-item");
+            logItem.innerHTML = `
+                            <div style="width:15%;font-size:14px" class="log-number">${i + 1
+              }</div>
+              <div style="width:25%;font-weight:700" class="log-source">${result[i].id
+              }</div>
+                            <div style="width:35%;font-weight:700" class="log-source">${result[i].time
+              }</div>
+            
+                            <div style="width:35%;font-size:14px;font-style:italic" class="log-message">${result[i].message
+              }</div>
+                          
+                        `;
+            logItem.addEventListener("click", function (e) {
+              document.getElementById("modall").style.display = "flex";
+              var logMessageElement =
+                e.currentTarget.querySelector(".log-message");
+              if (logMessageElement) {
+                var messageContent = logMessageElement.textContent.trim();
+                handleAppDialog(messageContent);
+              }
+            });
+            logContent.appendChild(logItem);
+          }
+        }
+        document.getElementById("slogContent").style.display = "none";
+      };
+
+      xhr.open("POST", "http://localhost:5678/LogManagement/jni", true);
+      xhr.setRequestHeader(
+        "Content-type",
+        "application/x-www-form-urlencoded"
+      );
+      xhr.send();
+}
+
+    window.onload = function () {
+      var today = new Date().toISOString().split("T")[0];
+      document.getElementById("searchDInput").setAttribute("max", today);
+      if(document.getElementById("badge").textContent==0){document.getElementById("badge").style.display="none"}
+      document.getElementById("uname").innerHTML =
+        window.localStorage.getItem("user");
+      document.getElementById("modall").style.display = "none";
+      document.getElementById("mailmodall").style.display = "none";
+      document.getElementById("logout").style.display = "none";
+      document.getElementById("DialogAlert").style.display = "none";
+      document.getElementById("alertmodall").style.display="none";
+      getTomcat();
+      handleHome();
+   handleJApp();
+    };
+
+    function handleGraph() {
+      document.getElementById("img").style.display = "none";
+      getTomcat();
+      document.getElementById("logs").style.display = "none";
+      document.getElementById("graph").style.display = "flex";
+    }
+
+    function handleHome() {
+      document.getElementById("img").style.display = "flex";
+      document.getElementById("graph").style.display = "none";
+      document.getElementById("logs").style.display = "none";
+    }
+
+    function handlemenu() {
+      document.getElementById("side").classList.contains("dnone")
+        ? document.getElementById("side").classList.remove("dnone")
+        : document.getElementById("side").classList.add("dnone");
+    }
+
+    function handleLeave() {
+      document.getElementById("side").classList.add("dnone");
+      document.getElementById("logout").style.display = "none";
+    }
+
+    function handleApp() {
+      document.getElementById("slogContent").style.display = "none";
+      document.getElementById("img").style.display = "none";
+      document.getElementById("stol").style.display = "none";
+      document.getElementById("tol").style.display = "";
+      document.getElementById("graph").style.display = "none";
+      document.getElementById("searchDInput").style.display = "none";
+      document.getElementById("logs").style.display = "flex";
+      document.getElementById("logContent").style.display = "";
+    
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", function () {
+        var filter = searchInput.value.toUpperCase();
+        var logItems = document.querySelectorAll(".log-item");
+        logItems.forEach(function (item) {
+          var sourceText = item
+            .querySelector(".log-source")
+            .textContent.toUpperCase();
+          var sourceNumber = item.querySelector(".log-number").textContent;
+          var messageText = item
+            .querySelector(".log-message")
+            .textContent.toUpperCase();
+          if (
+            sourceText.includes(filter) ||
+            messageText.includes(filter) ||
+            sourceNumber.includes(filter)
+          ) {
+            item.style.display = "flex";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      });
+    });
+
+    function getTomcat() {
+      document.getElementById("img").style.display = "none";
+      document.getElementById("graph").style.display = "none";
+      document.getElementById("logContent").style.display = "none";
+      document.getElementById("logs").style.display = "flex";
+      document.getElementById("slogContent").style.display = "";
+      document.getElementById("tol").style.display = "none";
+      document.getElementById("stol").style.display = "";
+      document.getElementById("searchDInput").style.display = "flex";
+    }
+  </script>
+</body>
+
+</html>

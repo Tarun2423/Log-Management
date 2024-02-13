@@ -1,0 +1,452 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+    overflow-y: hidden;
+}
+.app{
+ overflow: hidden;
+ position: relative;
+}
+.log-content::-webkit-scrollbar {
+    width: 6px;               /* width of the entire scrollbar */
+  }
+  
+  .log-content::-webkit-scrollbar-track {
+    background: rgb(248, 172, 66);    
+    border-radius: 10px;       /* roundness of the scroll thumb */
+    /* border: 1px solid rgb(38, 69, 208);    color of the tracking area */
+  }
+  
+  .log-content::-webkit-scrollbar-thumb {
+    background-color: rgb(49, 120, 219);    /* color of the scroll thumb */
+    border-radius: 10px;       /* roundness of the scroll thumb */
+    /* border: 1px solid rgb(98, 194, 246);  creates padding around scroll thumb */
+  }
+.nav{
+    height: 60px;
+    width: 100%;
+    background-color: rgb(97, 140, 249);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav p{
+    font-size: 18px;
+    letter-spacing: .6px;
+    color: #fff;
+     
+}
+.profile{
+    display: flex;
+    align-items: center;
+   justify-content: space-around;
+}
+.profile p{
+    margin-left: 8px;
+}
+.menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    text-align: center;
+}
+.menu p{
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+
+}
+
+.logs{
+   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.exp:hover{
+    transform: scale(1.1);
+}
+.search{
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: 30px;
+gap: 50px;
+}
+.search input[type="text"]{
+    width: 350px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(99, 97, 97);
+    outline: none;
+    padding: 7px;
+    font-size: 15px;
+}
+.tables{
+    margin-top: 30px;
+    width: 70%;
+}
+.total{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(242, 243, 248);
+    width: 150px;
+    height: 100px;  
+    flex-direction: column;
+    border-radius: 10px;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+}
+.tabl{
+    max-width: 500px;
+    height: 800px;
+}
+
+.tb{
+    max-width: 500px;
+}
+.log-content{
+   width: 70%;
+  padding: 10px;
+}
+
+.log-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(247, 247, 247);
+    margin-bottom: 20px;
+    border-radius: 5px;
+    height: 60px;
+    padding: 5px;
+    cursor: pointer;
+}
+.search{
+    margin-bottom: 50px;
+}
+
+.sidebar{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-direction: column;
+    position: absolute;
+    top:60px;
+    left: 0px;
+    font-size: 18px;
+    padding: 10px;
+    height: 250px;
+    width: 250px;
+    color: black;
+    background-color: rgb(242, 243, 248);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    letter-spacing: .6px;
+
+}
+.dnone{
+    display: none;
+}
+
+.sidebar p{
+    margin-left: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+.sidebar p:hover{
+color: rgb(30, 158, 228);
+}
+
+.graph{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: space-around;
+    padding: 100px;
+}
+
+.pie {
+    width: 350px;
+    height: 350px;
+    position: relative;
+    background: #f3f3f3;
+    border-radius: 50%;
+    border: 1px solid rgb(251, 93, 227);
+    overflow: hidden;
+    background-image: conic-gradient( 
+            pink 70deg,  
+            lightblue 0 235deg,  
+            orange 0); 
+}
+.info{
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    flex-direction: column;
+    gap:10px;
+    position: absolute;
+    top: 340px;
+    right: 80px;
+}
+.icolor{
+    background-color: pink ;
+    width: 20px;
+    height: 20px;
+    border-radius: 10%;
+}
+.wcolor{
+    background-color: lightblue;
+    width: 20px;
+    height: 20px;
+    border-radius: 10%;
+}
+.ocolor{
+    background-color: orange;
+    width: 20px;
+    height: 20px;
+    border-radius: 10%;
+}
+
+.bbar{
+    width: 400px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    width: 60%;
+    height: 60%;
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid rgb(61, 61, 61);
+    border-left: 1px solid rgb(75, 74, 74);
+    padding-left: 40px;
+  }
+
+  .bar {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .bar div {
+    height: 100%;
+    background-color: rgb(255, 138, 138);
+    transform: scaleY(1);
+    transform-origin: top;
+    display: flex;
+    align-items: flex-end;
+    color: aliceblue;
+    border: 1px solid rgb(30, 28, 28);
+  }
+.bar div:hover{
+    transform: scaleX(1.1);
+}
+  .pie:hover{
+transform: scale(1.1);
+  }
+  .modall{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
+    width: 800px;
+    height: 160px;
+    /* background-color: rgb(229, 247, 98); */
+    background-color: rgb(97, 140, 249);
+    color:#fff;
+z-index: 99;
+border-radius: 13px;
+font-size: 14px;
+padding: 10px;
+  }
+
+  .content{
+font-size: 15px;
+font-style: italic;
+  }
+  .closse{
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+
+  .logout{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 40px;
+    background-color: #dcdfdf;
+    color: black;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    cursor: pointer;
+   
+  }
+  .logout p{
+    text-align: center;
+    padding-top: 10px;
+  }
+  .logout:hover{
+    color: rgb(52, 126, 237);
+  }
+
+  .sidebars{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 50px;
+    padding-top: 13px;
+    cursor: pointer;
+  }
+
+  .sidebars p:hover{
+    color: black;
+  }
+  .nav:hover{
+    color: black;
+  }
+
+  .nav p:hover{
+    color: black;
+  }
+
+  .inp::placeholder{
+    color: white;
+  }
+  .refresh{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: #a6a9a9;
+    color: white;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 10px;
+    position: absolute;
+    top: 150px;
+    right: 240px;
+   
+  }
+  .refresh:hover{
+
+    transform: scale(1.1);
+  }
+  .alerrt{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background-color: #a6a9a9;
+    color: white;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 10px;
+    position: absolute;
+    top: 150px;
+    right: 280px;
+   
+  }
+  .alerrt:hover{
+
+    transform: scale(1.1);
+  }
+  .DialogAlert{
+    position: absolute;
+      width: 300px;
+      height: 200px;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background-color: #d9dedf;
+      color: #fff;
+  }
+  .DialogAlert::placeholder{
+    color: #fff;
+  }
+
+  .DialogAlert input{
+    border: none;
+    outline: none;
+    border-bottom:  1px solid white;
+    background: transparent;
+    width: 80%;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  .DialogAlert button{
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(103, 236, 62);
+    color: #fff;
+    width: 80px;
+height: 35px;
+cursor: pointer;
+  }
+
+  .alertmodall{
+    width: 700px;
+    height: 500px;
+    background-color: #a0e1fb;
+    border-radius: 10px;
+    position: absolute;
+    display: flex;
+    /* align-items: center; */
+    padding: 20px;
+    justify-content: center;
+    top: 100px;
+    left: 470px;
+    overflow-y: scroll;
+  }
+  .alertmodall::-webkit-scrollbar {
+    width: 6px;             
+  }
+  
+  .alertmodall::-webkit-scrollbar-track {
+    background: rgb(248, 172, 66);    
+    border-radius: 10px;       
+  }
+  
+  .alertmodall::-webkit-scrollbar-thumb {
+    background-color: rgb(49, 120, 219);   
+    border-radius: 10px;    
+  }
+  .divalert{
+    gap: 15px;
+    font-style: italic;
+    font-weight: 700;
+  }
+  .divalert:hover{
+  border-radius: 10px;
+background-color: white;
+width: 100%;
+cursor: pointer;
+  }

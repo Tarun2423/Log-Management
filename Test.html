@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Log Viewer</title>
+</head>
+<body>
+    <div id="logsContainer">
+    </div>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:5678/LogManagement/getTomcatLogsWebSocket");
+
+        socket.onopen = function(event) {
+            console.log("WebSocket connection established.");
+        };
+
+        socket.onmessage = function(event) {
+            console.log(event.data);
+            // console.log(JSON.parse(event.data));
+            
+            // const logsData = JSON.parse(event.data);
+            // const logs = logsData.logs;
+            // displayLogs(logs);
+        };
+
+        // function displayLogs(logs) {
+        //     const logsContainer = document.getElementById("logsContainer");
+        //     logsContainer.innerHTML = ""; 
+
+        //     logs.forEach(function(log) {
+        //         const logElement = document.createElement("div");
+        //         logElement.textContent = log;
+        //         logsContainer.appendChild(logElement);
+        //     });
+        // }
+    </script>
+</body>
+</html>

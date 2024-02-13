@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,400;1,700&display=swap" rel="stylesheet">
+    <title>Login Page</title>
+  </head>
+  <body>
+    <div id="con" class="container">
+      <div class="ad">
+        <div class="imgContainer">
+
+            <img src="log.jpg" alt="" class="logimg">
+            
+        </div>
+        
+      </div>
+      <div class="loginContainer">
+        <div class="login">
+          <div class="title">
+            <p
+              style="
+                font-weight: 700;
+                color: white;
+                letter-spacing: 1px;
+                font-size: 22px;
+              "
+            >
+              Login
+            </p>
+          </div>
+          <div class="inp">
+            <input type="text" name="name" id="name" placeholder="Username" />
+
+            <input style="margin-bottom: 10px;"
+              type="text"
+              name="password"
+              id="password"
+              placeholder="Password"
+            />
+          </div>
+          <div class="links">
+            <button style="margin-top: 20px;" class="btn" onclick="handleLogin()">SIGN IN</button>
+          </div>
+        </div>
+      </div>
+    </div>   
+      </div>
+    </div>
+    <script>
+function showApiResultModal(message, isSuccess) {
+  return new Promise((resolve) => {
+    if (isSuccess) {
+      Swal.fire({
+        title: "Success",
+        text: message,
+        icon: "success",
+      }).then(() => {
+        resolve(); 
+      });
+    } else {
+      Swal.fire({
+        title: "Failure",
+        text: message,
+        icon: "error",
+      }).then(() => {
+        resolve(); 
+      });
+    }
+  });
+}
+
+
+function handleLogin(){
+
+  var name=document.getElementById("name").value;
+  var password=document.getElementById("password").value;
+console.log(name,password)
+  var xhttp=new XMLHttpRequest();
+  xhttp.onreadystatechange=function(){
+  if(this.readyState==4 && this.status==200 && this.responseText.trim()!=="Incorrect"){
+    var r=JSON.parse(this.responseText);
+    window.localStorage.setItem("user",r.name);
+    window.localStorage.setItem("role",r.role);
+    window.location="http://localhost:5678/LogManagement/Home.html";
+
+  }
+  else if(this.readyState==4) {
+    console.log(this.responseText);
+  }
+}
+  xhttp.open("POST","http://localhost:5678/LogManagement/llogin",true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+var data = "name=" + name + "&password=" + password;
+xhttp.send(data);
+}
+
+
+
+    </script>
+  </body>
+</html>
